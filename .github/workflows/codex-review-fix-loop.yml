@@ -1,0 +1,21 @@
+name: Codex Review-Fix Loop (TEST)
+
+# TEMP TEST CALLER. Points at ashRong/test-dot-github-sim instead of
+# IndiaCommunityAnimals/.github, so this validates the caller -> reusable
+# workflow -> script mechanism on fully disposable infrastructure.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  loop:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ashRong/test-dot-github-sim/.github/workflows/reusable-codex-review-fix.yml@main
+    with:
+      profile: backend
+    secrets:
+      CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
